@@ -144,18 +144,10 @@ class PersistentQueue[T](config: QueueConfig, onCommitCallback: Int => Unit = _ 
     * @param index to be committed for next read
     */
   def commit(outputPortId: Int, index: Long): Unit = {
-    try {
-      verifyCommitOrder(outputPortId, index)
-      if (!indexMounted) mountIndexFile()
-      indexStore.writeLong(outputPortId << 3, index)
-      onCommitCallback(outputPortId)
-    } catch {
-      case e: Throwable =>
-        println("outputPortId = " + outputPortId)
-        println("index = " + index)
-        println(outputPortId << 3)
-        throw e
-    }
+    verifyCommitOrder(outputPortId, index)
+    if (!indexMounted) mountIndexFile()
+    indexStore.writeLong(outputPortId << 3, index)
+    onCommitCallback(outputPortId)
   }
 
   private def verifyCommitOrder(outputPortId: Int, index: Long): Unit = {
