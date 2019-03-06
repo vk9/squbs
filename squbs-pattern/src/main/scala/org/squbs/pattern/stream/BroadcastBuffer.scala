@@ -103,6 +103,7 @@ class BroadcastBufferAtLeastOnce[T] private(queue: PersistentQueue[T],
 
   def commit[U] = Flow[Event[U]].map { element =>
     if (!upstreamFailed) {
+      println(element)
       queue.commit(element.outputPortId, element.index)
       if(upstreamFinished) queueCloserActor ! Committed(element.outputPortId, element.index)
     }

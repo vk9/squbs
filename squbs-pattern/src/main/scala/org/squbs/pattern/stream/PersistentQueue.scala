@@ -146,6 +146,9 @@ class PersistentQueue[T](config: QueueConfig, onCommitCallback: Int => Unit = _ 
   def commit(outputPortId: Int, index: Long): Unit = {
     verifyCommitOrder(outputPortId, index)
     if (!indexMounted) mountIndexFile()
+    println(outputPortId)
+    println(index)
+    println(outputPortId << 3)
     indexStore.writeLong(outputPortId << 3, index)
     onCommitCallback(outputPortId)
   }
