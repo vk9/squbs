@@ -198,7 +198,6 @@ abstract class BroadcastBufferAtLeastOnceSpec[T: ClassTag, Q <: QueueSerializer[
 
     val mat = ActorMaterializer()
     val injectError = Flow[Int].map { n =>
-      println(n)
       if (n == failTestAt) throw new NumberFormatException("This is a fake exception")
       else n
     }
