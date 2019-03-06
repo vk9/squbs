@@ -150,10 +150,11 @@ class PersistentQueue[T](config: QueueConfig, onCommitCallback: Int => Unit = _ 
       indexStore.writeLong(outputPortId << 3, index)
       onCommitCallback(outputPortId)
     } catch {
-      case _: Throwable =>
+      case e: Throwable =>
         println("outputPortId = " + outputPortId)
         println("index = " + index)
         println(outputPortId << 3)
+        throw e
     }
   }
 
